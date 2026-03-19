@@ -55,7 +55,7 @@ export const AboutTimeline = ({ slides }) => {
     return (
         <section className="pt-6 md:pt-12 2xl:pt-20">
             <div className="container max-w-large">
-                <h2 className="text-3xl md:text-4xl 2xl:text-[45px] text-center font-light uppercase tracking-wide leading-snug mb-8 md:mb-10 md:mb-16 2xl:mb-20">Timeline</h2>
+                <h2 className="text-3xl md:text-4xl 2xl:text-[45px] text-center font-light uppercase tracking-wide leading-snug mb-8 md:mb-10 2xl:mb-20">Timeline</h2>
 
                 <div className="relative border-b border-neutral-300 pb-4 px-10">
                     <div className="max-w-[1350px] mx-auto">
