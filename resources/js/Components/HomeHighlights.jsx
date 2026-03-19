@@ -21,12 +21,12 @@ export const HomeHighlights = ({ highlights }) => {
                         <Link href={item.link} className="block w-fit mx-auto font-light text-center uppercase border border-black px-8 py-2 my-16 2xl:my-20 min-w-40 sm:min-w-44 transition-all hover:bg-black hover:text-white" aria-label={item.titulo}>{item.texto_botao}</Link>
                     )}
 
-                    {item.imagem && (
-                        <img src={item.imagem} className="mx-auto mt-16 md:mt-20 max-h-[85vh] w-full object-cover" alt={item.titulo} />
+                    {item.video && (
+                        <VideoPlayer video={item.video} poster={item.imagem} className="mx-auto mt-16 md:mt-20 max-h-[85vh] w-full object-cover" autoPlay muted loop playsInline />
                     )}
 
-                    {item.video && (
-                        <VideoPlayer video={item.video} className="mx-auto mt-16 md:mt-20 max-h-[85vh] w-full object-cover" autoPlay muted loop playsInline />
+                    {!item.video && item.imagem && (
+                        <img src={item.imagem} className="mx-auto mt-16 md:mt-20 max-h-[85vh] w-full object-cover" alt={item.titulo} />
                     )}
                 </Reveal>
             </section>
