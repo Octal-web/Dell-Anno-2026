@@ -9,12 +9,12 @@ export const StoreData = ({ store }) => {
                     </div>
                     
                     <div className="relative py-8 md:py-10 md:before:absolute md:before:top-0 md:before:bottom-0 md:before:w-px md:before:bg-neutral-400 md:before:left-0 border-t md:border-t-0 border-neutral-400">
-                        <p className="font-secondary text-center font-bold uppercase mb-4 md:mb-10">Contacts:</p>
+                        <p className="font-secondary text-center font-bold uppercase mb-4 md:mb-10">Contact:</p>
                         <p className="font-secondary text-center font-light leading-loose whitespace-pre-line">{store.contato}</p>
                     </div>
                     
                     <div className="relative py-8 md:py-10 md:before:absolute md:before:top-0 md:before:bottom-0 md:before:w-px md:before:bg-neutral-400 md:before:left-0 border-t md:border-t-0 border-neutral-400">
-                        <p className="font-secondary text-center font-bold uppercase mb-4 md:mb-10">Hours:</p>
+                        <p className="font-secondary text-center font-bold uppercase mb-4 md:mb-10">Oppening Hours:</p>
                         <p className="font-secondary text-center font-light leading-loose whitespace-pre-line">{store.horario_atendimento}</p>
                     </div>
                 </div>

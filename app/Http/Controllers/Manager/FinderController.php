@@ -52,7 +52,7 @@ class FinderController extends Controller
 
         foreach ($request->file('files') as $file) {
 
-            $name = time().'_'.$file->getClientOriginalName();
+            $name = $file->getClientOriginalName();
 
             $file->move($path, $name);
         }

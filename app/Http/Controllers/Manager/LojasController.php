@@ -127,6 +127,11 @@ class LojasController extends Controller
                 $loja->imagem_showroom = md5(uniqid((string) rand(), true)) . '.' . strtolower($request->file('img_showroom')->extension());
             }
 
+            if ($request->file('vid_showroom') && $request->file('vid_showroom')->getError() == 0) {
+                $loja->video_showroom = md5(uniqid((string) rand(), true)) . '.' . strtolower($request->file('vid_showroom')->extension());
+            }
+
+            $loja->slug = $slug;
             $loja->link_lp = $request->link_lp ?? null;
             $loja->link_showroom = $request->link_showroom ?? null;
             $loja->pais_id = $request->pais_id;
@@ -353,6 +358,10 @@ class LojasController extends Controller
             if ($request->file('img_showroom') && $request->file('img_showroom')->getError() == 0) {
                 $loja->imagem_showroom = md5(uniqid((string) rand(), true)) . '.' . strtolower($request->file('img_showroom')->extension());
             }
+
+            if ($request->file('vid_showroom') && $request->file('vid_showroom')->getError() == 0) {
+                $loja->video_showroom = md5(uniqid((string) rand(), true)) . '.' . strtolower($request->file('vid_showroom')->extension());
+            }
             
             $loja->link_lp = $request->link_lp ?? null;
             $loja->link_showroom = $request->link_showroom ?? null;
@@ -370,6 +379,9 @@ class LojasController extends Controller
             $response = $loja->save();
             $response = $loja_idioma->save();
 
+            $loja->estados()->sync($request->input('estados', []));
+            $loja->cidades()->sync($request->input('cidades', []));
+            
             if ($response) {
                 if ($request->file('img') && $request->file('img')->getError() == 0) {
                     if ($loja->imagem && isset($lojaOriginal) && File::exists('content/stores/b/' . $lojaOriginal->imagem)) {
@@ -517,5 +529,35 @@ class LojasController extends Controller
         }
 
         return redirect()->back();
+    }
+
+    /**
+     * Download the file of the specified resource.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function baixarVideo($id) {
+        $loja = Loja::query()
+            ->where([
+                'id' => $id,
+                'excluido' => NULL,
+            ])
+            ->first();
+
+        if (!$loja) {
+            return redirect()->route('Manager.Lojas.index');
+        }
+
+        $caminho = public_path('content/stores/showroom/video/' . $loja->video);
+
+        if (!File::exists($caminho)) {
+            return redirect()->back()->with('message', ['type' => 'error', 'msg' => 'Não foi possível encontrar o arquivo!']);
+        }
+
+        $extensao = pathinfo($caminho)['extension'];
+
+        return response()->download($caminho, 'loja-' . $loja->slug . '.' . $extensao);
     }
 };

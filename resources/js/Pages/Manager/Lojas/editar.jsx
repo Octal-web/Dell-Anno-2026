@@ -41,7 +41,7 @@ const Page = () => {
         [{ titulo: 'Endereço', name: 'endereco', tamanho: 'col-span-12 md:col-span-6 lg:col-span-4', tipo: 'texto_longo', editor: false, max: 150 }, { titulo: 'Contato', name: 'contato', tamanho: 'col-span-12 md:col-span-6 lg:col-span-4', tipo: 'texto_longo', editor: false, max: 150 }],
         [{ titulo: 'Horário de Atendimento', name: 'horario_atendimento', tamanho: 'col-span-12 md:col-span-6 lg:col-span-4', tipo: 'texto_longo', editor: false, max: 150 }, { titulo: 'Texto chamada', name: 'chamada', tamanho: 'col-span-12 md:col-span-6 lg:col-span-4', tipo: 'texto_longo', editor: false, max: 350 }],
         [{ titulo: 'Logo', name: 'img_logo', tamanho: 'col-span-12 md:col-span-6 lg:col-span-4', tipo: 'imagem', crop: false, largura: 250, altura: 150, imagem: loja.logo }, { titulo: 'Imagem', name: 'img', tamanho: 'col-span-12 md:col-span-6', tipo: 'imagem', crop: true, largura: 1920, altura: 760, imagem: loja.imagem }],
-        [{ titulo: 'Imagem Showroom', name: 'img_showroom', tamanho: 'col-span-12 md:col-span-6 lg:col-span-4', tipo: 'imagem', crop: true, largura: 1920, altura: 1310, imagem: loja.imagem_showroom }, { titulo: 'Vídeo Showroom', name: 'vid_showroom', tamanho: 'col-span-12 md:col-span-6 lg:col-span-4', tipo: 'video', arquivo: route('Manager.Lojas.baixarVideo', { id: loja.id })}],
+        [{ titulo: 'Imagem Showroom', name: 'img_showroom', tamanho: 'col-span-12 md:col-span-6 lg:col-span-4', tipo: 'imagem', crop: true, largura: 1920, altura: 1310, imagem: loja.imagem_showroom }, { titulo: 'Vídeo Showroom', name: 'vid_showroom', tamanho: 'col-span-12 md:col-span-6 lg:col-span-4', tipo: 'video', arquivo: loja.video_showroom ? route('Manager.Lojas.baixarVideo', { id: loja.id }) : null }],
         [{ titulo: 'Título da Página', name: 'titulo_pagina', tamanho: 'col-span-12 lg:col-span-8', tipo: 'texto', max: 100 }],
         [{ titulo: 'Descrição da Página', name: 'descricao_pagina', tamanho: 'col-span-12 lg:col-span-8', editor: false, tipo: 'texto_longo', max: 300 }],
     ];
@@ -168,6 +168,14 @@ const Page = () => {
             !selectedCities.find(selected => selected.value === city.value)
         ) || []
     })).filter(group => group.options.length > 0);
+        
+    useEffect(() => {
+        setData(prevData => ({
+            ...prevData,
+            estados: selectedStates.map(s => s.value),
+            cidades: selectedCities.map(c => c.value),
+        }));
+    }, [selectedStates, selectedCities]);
 
     return (
         <AdminLayout>

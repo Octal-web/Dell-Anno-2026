@@ -298,11 +298,11 @@ const DefaultLayout = ({ children }) => {
                             </span>
 
                             <span className="text-white text-xs sm:text-sm font-light text-center opacity-70 mb-5 md:mb-0">
-                                © {new Date().getFullYear()} Dell Anno | Todos os direitos reservados.
+                                © {new Date().getFullYear()} Dell Anno | All rights reserved
                             </span>
 
                             <div className="flex items-center justify-center md:justify-end gap-4">
-                                <span className="text-white text-xs sm:text-sm font-light opacity-70">Criado por: </span>
+                                <span className="text-white text-xs sm:text-sm font-light opacity-70">Created by: </span>
                                 <img src={`/site/img/8poroito-logo.png`} className="opacity-50" alt="8poroito" />
                             </div>
                         </div>

@@ -14,6 +14,7 @@ use Inertia\Inertia;
 use App\Http\Requests\Manager\PostTimelineRequest;
 
 use Carbon\Carbon;
+use App\Services\ImageCompressor;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Response;
 
@@ -36,7 +37,7 @@ class AcontecimentosController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function novo(PostTimelineRequest $request) {
+    public function novo(PostTimelineRequest $request, ImageCompressor $compressor) {
         if($request->ajax()){
             $idioma = inertia()->getShared('idioma');
             
@@ -57,7 +58,7 @@ class AcontecimentosController extends Controller
             $response = $acontecimento_idioma->save();
 
             if ($response) {
-                $image = $request->file('img')->move(public_path('content/timeline/thumbs/'), $acontecimento->imagem);
+                $compressor->compressOrFallback($request->file('img')->getRealPath(), public_path('content/timeline/thumbs/' . $acontecimento->imagem));
 
                 return to_route('Manager.Institucional.index')->with('message', ['type' => 'success', 'msg' => 'Registro salvo com sucesso!']);
             }
@@ -130,7 +131,7 @@ class AcontecimentosController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function atualizar(PostTimelineRequest $request, $id) {
+    public function atualizar(PostTimelineRequest $request, $id, ImageCompressor $compressor) {
         if($request->ajax()){
             $acontecimento = Acontecimento::query()
                 ->where([
@@ -198,7 +199,7 @@ class AcontecimentosController extends Controller
                         File::delete('content/timeline/thumbs/' . $acontecimentoOriginal->imagem);
                     }
                     
-                    $image = $request->file('img')->move(public_path('content/timeline/thumbs/'), $acontecimento->imagem);
+                    $compressor->compressOrFallback($request->file('img')->getRealPath(), public_path('content/timeline/thumbs/' . $acontecimento->imagem));
                 }
 
                 return to_route('Manager.Institucional.index')->with('message', ['type' => 'success', 'msg' => 'Registro salvo com sucesso!']);

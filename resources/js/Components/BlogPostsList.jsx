@@ -13,7 +13,7 @@ export const BlogPostsList = ({ data }) => {
                             </Link>
 
                             <div className="font-secondary text-neutral-500 max-sm:text-xs max-md:text-sm font-light mt-2 md:mt-6">
-                                {item.data} | {item.categoria}
+                                {item.data}{/*  | {item.categoria} */}
                             </div>
                             
                             <Link href={route('Blog.post', {slug: item.slug})} className="block my-4 md:my-6 transition-all hover:opacity-70">

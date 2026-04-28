@@ -82,7 +82,6 @@ class PostsController extends Controller
             $post->imagem = md5(uniqid((string) rand(), true)) . '.' . strtolower($request->file('img')->extension());
             $post->slug = $slug;
             $post->post_categoria_id = $request->post_categoria_id;
-            $post->destaque = $request->destaque;
 
             $response = $post->save();
 
@@ -175,8 +174,8 @@ class PostsController extends Controller
 
         $post = [
             'id' => $post->id,
-            'destaque' => $post->destaque,
             'post_categoria_id' => $post->post_categoria_id,
+            'publicado' => $post->publicado ? Carbon::parse($post->publicado)->format('Y-m-d\TH:i') : null,
             'imagem' => asset('content/posts/thumbs/' . $post->imagem),
             'titulo' => count($post->postsIdiomas) ? $post->postsIdiomas[0]->titulo : null,
             'previa' => count($post->postsIdiomas) ? $post->postsIdiomas[0]->previa : null,
@@ -272,7 +271,6 @@ class PostsController extends Controller
 
             $post->slug = $slug;
             $post->post_categoria_id = $request->post_categoria_id;
-            $post->destaque = $request->destaque;
             
             $post_idioma->titulo = $request->titulo;
             $post_idioma->previa = $request->previa;

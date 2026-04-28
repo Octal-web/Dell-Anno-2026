@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 use App\Models\Pagina;
@@ -17,7 +18,7 @@ class BlogController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index() {
+    public function index(Request $request) {
         $idioma = inertia()->getShared('idioma');
 
         $posts = Post::query()
@@ -98,6 +99,10 @@ class BlogController extends Controller
                     'slug' => $categoria->slug
                 ];
             });
+
+        if ($request->wantsJson()) {
+            return response()->json($posts);
+        }
 
         return Inertia::render('Blog', [
             'posts' => $posts,

@@ -24,7 +24,7 @@ export const StoresList = ({ content, loading, stores }) => {
                                 );
                                 
                                 const titleElement = (
-                                    <h3 className="text-2xl font-light max-sm:tracking-tight uppercase mx-2 sm:mx-4">Dell Anno {store.cidade + ' - ' + store.estado}</h3>
+                                    <h3 className="text-2xl font-light max-sm:tracking-tight uppercase mx-2 sm:mx-4">Dell Anno {store.estado ? store.cidade + ' - ' + store.estado : store.cidade}</h3>
                                 );
                                 
                                 const buttonElement = (

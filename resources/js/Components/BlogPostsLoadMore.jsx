@@ -1,5 +1,5 @@
+// BlogPostsLoadMore.jsx
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { router } from '@inertiajs/react';
 
 const BlogPostsLoadMore = ({ 
     initialData, 
@@ -16,82 +16,60 @@ const BlogPostsLoadMore = ({
     const [hasMore, setHasMore] = useState(initialData?.next_page_url !== null);
     const observerRef = useRef();
 
-    const loadMore = useCallback(() => {
+    const loadMore = useCallback(async () => {
         if (loading || !hasMore || !data?.next_page_url) return;
 
         setLoading(true);
 
-        const url = new URL(data.next_page_url);
-        
-        // Remove o parâmetro page da URL
-        url.searchParams.delete('page');
-        
-        if (selectedCategory) {
-            url.searchParams.set('categoria', selectedCategory.slug);
-        }
+        try {
+            const url = new URL(data.next_page_url);
 
-        // Extrai o número da página do next_page_url original
-        const originalUrl = new URL(data.next_page_url);
-        const pageNumber = originalUrl.searchParams.get('page');
-
-        // Usa apenas o pathname da URL atual (sem query parameters)
-        const currentPath = window.location.pathname;
-
-        router.visit(currentPath, {
-            data: {
-                page: pageNumber, // Envia page apenas como dado, não na URL
-                ...(selectedCategory && { categoria: selectedCategory.slug })
-            },
-            method: 'get',
-            preserveState: true,
-            preserveScroll: true,
-            replace: true, // Não adiciona nova entrada no histórico
-            only: ['posts'],
-            onSuccess: (page) => {
-                const newData = page.props.posts;
-                
-                const updatedData = {
-                    ...newData,
-                    data: [...data.data, ...newData.data]
-                };
-                
-                setData(updatedData);
-                setHasMore(newData.next_page_url !== null);
-                setLoading(false);
-                
-                if (onDataUpdate) {
-                    onDataUpdate(updatedData);
-                }
-            },
-            onError: (errors) => {
-                console.error('Erro ao carregar mais dados:', errors);
-                setLoading(false);
+            if (selectedCategory) {
+                url.searchParams.set('categoria', selectedCategory.slug);
             }
-        });
+
+            const response = await fetch(url.toString(), {
+                headers: {
+                    'Accept': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest',
+                },
+            });
+
+            const newData = await response.json();
+
+            const updatedData = {
+                ...newData,
+                data: [...data.data, ...newData.data],
+            };
+
+            setData(updatedData);
+            setHasMore(newData.next_page_url !== null);
+
+            if (onDataUpdate) {
+                onDataUpdate(updatedData);
+            }
+        } catch (error) {
+            console.error('Erro ao carregar mais dados:', error);
+        } finally {
+            setLoading(false);
+        }
     }, [loading, hasMore, data, selectedCategory, onDataUpdate]);
 
     const triggerRef = useCallback((node) => {
         if (loading) return;
         if (observerRef.current) observerRef.current.disconnect();
-        
+
         observerRef.current = new IntersectionObserver(entries => {
             if (entries[0].isIntersecting && hasMore) {
                 loadMore();
             }
-        }, {
-            rootMargin,
-            threshold
-        });
-        
+        }, { rootMargin, threshold });
+
         if (node) observerRef.current.observe(node);
     }, [loading, hasMore, loadMore, rootMargin, threshold]);
 
     useEffect(() => {
-        return () => {
-            if (observerRef.current) {
-                observerRef.current.disconnect();
-            }
-        };
+        return () => observerRef.current?.disconnect();
     }, []);
 
     useEffect(() => {
@@ -114,17 +92,10 @@ const BlogPostsLoadMore = ({
     return (
         <div>
             {children({ data, loading, hasMore, loadMore })}
-            
-            {hasMore && (
-                <div ref={triggerRef} className="h-4" />
-            )}
-            
+            {hasMore && <div ref={triggerRef} className="h-4" />}
             {loading && (loadingComponent || defaultLoadingComponent)}
-            
             {!hasMore && data?.data?.length > 0 && (
-                <div className="text-center pb-16 text-gray-400">
-                    {endMessage}
-                </div>
+                <div className="text-center pb-16 text-gray-400">{endMessage}</div>
             )}
         </div>
     );

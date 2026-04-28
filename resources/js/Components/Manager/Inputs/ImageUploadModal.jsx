@@ -482,7 +482,7 @@ export const ImageUploadModal = ({ onImageSelect, onClose }) => {
             onClick={(e) => e.target === e.currentTarget && onClose()}
         >
             <div
-                className="bg-white w-full max-w-3xl shadow-2xl flex flex-col overflow-hidden animate-fade-in-down"
+                className="bg-white w-full max-w-3xl shadow-2xl flex flex-col overflow-hidden animate-fade-in-down [animation-duration:_0.1s]"
                 style={{
                     height: "min(90vh, 640px)",
                 }}

@@ -14,20 +14,14 @@ const Page = () => {
     const { data, setData, post, processing, errors } = useForm();
 
     const breadcrumbItems = [
-        { label: 'News', link: 'Manager.Blog.index' },
+        { label: 'Frame', link: 'Manager.Blog.index' },
     ];
-
-    const highlightOptions = [
-        {value: 'nenhum', label: 'Nenhum'},
-        {value: 'principal', label: 'Destaque Principal'},
-        {value: 'secundario', label: 'Destaque Secundário'}
-    ]
 
     const inputItems = [
         [{ titulo: 'Título', name: 'titulo', tamanho: 'col-span-12 lg:col-span-8', tipo: 'texto', max: 100 }],
-        [{ titulo: 'Categoria', name: 'post_categoria_id', tamanho: 'col-span-12 lg:col-span-3', tipo: 'select', options: categorias }, { titulo: 'Tipo de destaque', name: 'destaque', tamanho: 'col-span-12 lg:col-span-3', tipo: 'select', options: highlightOptions }, { titulo: 'Publicado em', name: 'publicado', tamanho: 'col-span-12 lg:col-span-2', tipo: 'data_hora' }],
+        [{ titulo: 'Categoria', name: 'post_categoria_id', tamanho: 'col-span-12 md:col-span-6 lg:col-span-4', tipo: 'select', options: categorias }, { titulo: 'Publicado em', name: 'publicado', tamanho: 'col-span-12  md:col-span-6 lg:col-span-4', tipo: 'data_hora' }],
         [{ titulo: 'Prévia', name: 'previa', tamanho: 'col-span-12 lg:col-span-8', editor: false, tipo: 'texto_longo', max: 300 }],
-        [{ titulo: 'Conteúdo', name: 'conteudo', tamanho: 'col-span-12 lg:col-span-8', editor: true, 'toolbar': ['Bold', 'Italic', 'List', 'Link', 'Table', 'Image'], tipo: 'texto_longo', max: 2500 }],
+        [{ titulo: 'Conteúdo', name: 'conteudo', tamanho: 'col-span-12 lg:col-span-8', editor: true, 'toolbar': ['Heading', 'Bold', 'Italic', 'List', 'Link', 'Align', 'Table', 'Image'], tipo: 'texto_longo', max: 6500 }],
         [{ titulo: 'Imagem', name: 'img', tamanho: 'col-span-12 lg:col-span-8', tipo: 'imagem', crop: true, largura: 960, altura: 600 }],
         [{ titulo: 'Título da Página', name: 'titulo_pagina', tamanho: 'col-span-12 lg:col-span-8', tipo: 'texto', max: 100 }],
         [{ titulo: 'Descrição da Página', name: 'descricao_pagina', tamanho: 'col-span-12 lg:col-span-8', editor: false, tipo: 'texto_longo', max: 300 }],

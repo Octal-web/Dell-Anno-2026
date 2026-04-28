@@ -24,7 +24,7 @@ export const OtherPostsList = ({ posts }) => {
                                 </Link>
 
                                 <div className="font-secondary text-neutral-500 max-sm:text-xs max-md:text-sm font-light mt-2 md:mt-6">
-                                    {post.data} | {post.categoria}
+                                    {post.data}{/*  | {item.categoria} */}
                                 </div>
                                 
                                 <Link href={route('Blog.post', {slug: post.slug})} className="block my-4 md:my-6 transition-all hover:opacity-70">

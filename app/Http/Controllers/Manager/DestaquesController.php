@@ -233,7 +233,7 @@ class DestaquesController extends Controller
                         File::delete('content/highlights/thumbs/' . $destaqueOriginal->imagem);
                     }
 
-                    $image = $request->file('img')->move(public_path('content/highlights/thumbs/'), $destaque->imagem);
+                    $compressor->compressOrFallback($request->file('img')->getRealPath(), public_path('content/highlights/thumbs/' . $destaque->imagem));
                 }
                 
                 if ($request->file('vid') && $request->file('vid')->getError() == 0) {
